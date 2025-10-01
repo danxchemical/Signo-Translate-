@@ -11,13 +11,6 @@
             box-sizing: border-box;
         }
 
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            line-height: 1.6;
-            color: #333;
-            overflow-x: hidden;
-        }
-
         :root {
             --primary-color: #D1A68B;
             --secondary-color: #8B7355;
@@ -27,12 +20,23 @@
             --gradient: linear-gradient(135deg, #D1A68B 0%, #8B7355 100%);
         }
 
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            overflow-x: hidden;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
         /* Navegación */
         nav {
             position: fixed;
             top: 0;
             width: 100%;
-            background: rgba(255, 255, 255, 0.95);
+            background: rgba(255, 255, 255, 0.98);
             backdrop-filter: blur(10px);
             z-index: 1000;
             padding: 1rem 0;
@@ -41,12 +45,12 @@
         }
 
         .nav-container {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 0 2rem;
+            padding: 0 3%;
         }
 
         .logo {
@@ -55,10 +59,15 @@
             gap: 1rem;
         }
 
-        .logo img {
+        .logo-img {
             width: 50px;
             height: 50px;
+            background: var(--gradient);
             border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
         }
 
         .logo h2 {
@@ -70,7 +79,8 @@
         .nav-links {
             display: flex;
             list-style: none;
-            gap: 2rem;
+            gap: 2.5rem;
+            align-items: center;
         }
 
         .nav-links a {
@@ -100,14 +110,31 @@
             width: 100%;
         }
 
+        .social-nav {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .social-nav a {
+            color: var(--dark-color);
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+        }
+
+        .social-nav a:hover {
+            color: var(--primary-color);
+            transform: translateY(-3px);
+        }
+
         /* Hero Section */
-        .hero {
+        #inicio {
             min-height: 100vh;
             background: var(--gradient);
             display: flex;
             align-items: center;
             position: relative;
             overflow: hidden;
+            padding-top: 80px;
         }
 
         .hero::before {
@@ -122,9 +149,9 @@
         }
 
         .hero-container {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
-            padding: 0 2rem;
+            padding: 0 3%;
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 4rem;
@@ -134,7 +161,7 @@
         }
 
         .hero-content h1 {
-            font-size: 3.5rem;
+            font-size: 4rem;
             font-weight: 800;
             color: white;
             margin-bottom: 1.5rem;
@@ -143,22 +170,47 @@
         }
 
         .hero-content .subtitle {
-            font-size: 1.3rem;
-            color: rgba(255,255,255,0.9);
+            font-size: 1.4rem;
+            color: rgba(255,255,255,0.95);
             margin-bottom: 2rem;
             animation: slideUp 1s ease 0.2s both;
+            font-weight: 500;
         }
 
         .hero-content .description {
-            font-size: 1.1rem;
-            color: rgba(255,255,255,0.8);
+            font-size: 1.15rem;
+            color: rgba(255,255,255,0.85);
             margin-bottom: 3rem;
             animation: slideUp 1s ease 0.4s both;
+            line-height: 1.8;
+        }
+
+        .badge-container {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            animation: slideUp 1s ease 0.5s both;
+        }
+
+        .badge {
+            background: rgba(255,255,255,0.2);
+            backdrop-filter: blur(10px);
+            padding: 0.5rem 1.2rem;
+            border-radius: 25px;
+            color: white;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            animation: slideUp 1s ease 0.6s both;
         }
 
         .cta-button {
             display: inline-block;
-            padding: 1rem 2rem;
+            padding: 1.2rem 2.5rem;
             background: white;
             color: var(--primary-color);
             text-decoration: none;
@@ -166,14 +218,23 @@
             font-weight: 600;
             font-size: 1.1rem;
             transition: all 0.3s ease;
-            animation: slideUp 1s ease 0.6s both;
             box-shadow: 0 10px 30px rgba(0,0,0,0.2);
         }
 
         .cta-button:hover {
             transform: translateY(-5px);
             box-shadow: 0 15px 40px rgba(0,0,0,0.3);
-            background: var(--accent-color);
+        }
+
+        .cta-secondary {
+            background: transparent;
+            color: white;
+            border: 2px solid white;
+        }
+
+        .cta-secondary:hover {
+            background: white;
+            color: var(--primary-color);
         }
 
         .hero-visual {
@@ -184,11 +245,11 @@
         }
 
         .phone-mockup {
-            width: 300px;
-            height: 600px;
+            width: 320px;
+            height: 640px;
             background: var(--light-color);
-            border-radius: 30px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            border-radius: 40px;
+            box-shadow: 0 30px 80px rgba(0,0,0,0.4);
             padding: 2rem;
             display: flex;
             flex-direction: column;
@@ -201,38 +262,43 @@
         .phone-mockup::before {
             content: '';
             position: absolute;
-            top: 10px;
+            top: 15px;
             left: 50%;
             transform: translateX(-50%);
-            width: 60px;
-            height: 4px;
+            width: 80px;
+            height: 5px;
             background: #ccc;
-            border-radius: 2px;
+            border-radius: 3px;
         }
 
         .phone-screen {
             width: 100%;
             height: 100%;
             background: var(--gradient);
-            border-radius: 20px;
+            border-radius: 30px;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             color: white;
             text-align: center;
-            padding: 2rem;
+            padding: 2.5rem;
+        }
+
+        .phone-screen .icon {
+            font-size: 5rem;
+            margin-bottom: 1.5rem;
+            animation: pulse 2s ease-in-out infinite;
         }
 
         /* Secciones */
-        .section {
-            padding: 6rem 0;
+        section {
+            padding: 6rem 3%;
         }
 
         .container {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
-            padding: 0 2rem;
         }
 
         .section-title {
@@ -241,39 +307,104 @@
         }
 
         .section-title h2 {
-            font-size: 2.5rem;
+            font-size: 3rem;
             color: var(--dark-color);
             margin-bottom: 1rem;
             position: relative;
             display: inline-block;
+            font-weight: 800;
         }
 
         .section-title h2::after {
             content: '';
             position: absolute;
-            bottom: -10px;
+            bottom: -15px;
             left: 50%;
             transform: translateX(-50%);
-            width: 60px;
+            width: 80px;
             height: 4px;
             background: var(--gradient);
             border-radius: 2px;
+        }
+
+        .section-title p {
+            color: #666;
+            font-size: 1.2rem;
+            margin-top: 1.5rem;
+        }
+
+        /* Video Section */
+        .video-section {
+            background: var(--accent-color);
+        }
+
+        .video-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+        }
+
+        .video-wrapper {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+        }
+
+        .video-wrapper video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .video-placeholder {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--gradient);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 4rem;
+        }
+
+        .video-info {
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .video-info h3 {
+            color: var(--dark-color);
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .video-info p {
+            color: #666;
         }
 
         /* Features Grid */
         .features-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 3rem;
-            margin-bottom: 4rem;
+            gap: 2.5rem;
         }
 
         .feature-card {
             background: white;
             padding: 3rem;
             border-radius: 20px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
-            transition: all 0.3s ease;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+            transition: all 0.4s ease;
             position: relative;
             overflow: hidden;
         }
@@ -284,10 +415,10 @@
             top: 0;
             left: 0;
             right: 0;
-            height: 4px;
+            height: 5px;
             background: var(--gradient);
             transform: translateX(-100%);
-            transition: transform 0.3s ease;
+            transition: transform 0.4s ease;
         }
 
         .feature-card:hover::before {
@@ -295,61 +426,90 @@
         }
 
         .feature-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+            transform: translateY(-15px);
+            box-shadow: 0 25px 60px rgba(0,0,0,0.15);
         }
 
         .feature-icon {
-            width: 80px;
-            height: 80px;
+            width: 90px;
+            height: 90px;
             background: var(--gradient);
-            border-radius: 50%;
+            border-radius: 20px;
             display: flex;
             align-items: center;
             justify-content: center;
             margin-bottom: 2rem;
-            font-size: 2rem;
+            font-size: 2.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .feature-card:hover .feature-icon {
+            transform: scale(1.1) rotate(5deg);
         }
 
         .feature-card h3 {
-            font-size: 1.5rem;
+            font-size: 1.6rem;
             color: var(--dark-color);
             margin-bottom: 1rem;
+            font-weight: 700;
         }
 
         .feature-card p {
             color: #666;
-            line-height: 1.7;
+            line-height: 1.8;
+            font-size: 1.05rem;
         }
 
         /* Stats Section */
         .stats {
-            background: var(--accent-color);
+            background: var(--dark-color);
+            color: white;
+        }
+
+        .stats .section-title h2 {
+            color: white;
+        }
+
+        .stats .section-title h2::after {
+            background: white;
+        }
+
+        .stats .section-title p {
+            color: rgba(255,255,255,0.8);
         }
 
         .stats-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 3rem;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 4rem;
             text-align: center;
         }
 
+        .stat-item {
+            transition: transform 0.3s ease;
+        }
+
+        .stat-item:hover {
+            transform: translateY(-10px);
+        }
+
         .stat-item h3 {
-            font-size: 3rem;
+            font-size: 4rem;
             color: var(--primary-color);
             font-weight: 800;
-            margin-bottom: 0.5rem;
+            margin-bottom: 1rem;
         }
 
         .stat-item p {
-            color: var(--dark-color);
+            font-size: 1.1rem;
             font-weight: 500;
+            line-height: 1.6;
         }
 
         /* Team Section */
         .team-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
             gap: 3rem;
             margin-top: 3rem;
         }
@@ -364,63 +524,136 @@
         }
 
         .team-card:hover {
-            transform: translateY(-10px);
+            transform: translateY(-15px);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.15);
         }
 
         .team-avatar {
-            width: 120px;
-            height: 120px;
+            width: 130px;
+            height: 130px;
             background: var(--gradient);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             margin: 0 auto 2rem;
-            font-size: 3rem;
+            font-size: 3.5rem;
             color: white;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
         }
 
         .team-card h3 {
-            font-size: 1.3rem;
+            font-size: 1.4rem;
             color: var(--dark-color);
             margin-bottom: 0.5rem;
+            font-weight: 700;
         }
 
         .team-card .role {
             color: var(--primary-color);
             font-weight: 600;
             margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+
+        .team-card p {
+            color: #666;
+            line-height: 1.7;
+        }
+
+        .team-socials {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .team-socials a {
+            width: 40px;
+            height: 40px;
+            background: var(--accent-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-color);
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+
+        .team-socials a:hover {
+            background: var(--gradient);
+            color: white;
+            transform: translateY(-3px);
         }
 
         /* Footer */
         footer {
             background: var(--dark-color);
             color: white;
-            padding: 4rem 0 2rem;
-            text-align: center;
+            padding: 4rem 3% 2rem;
         }
 
         .footer-content {
-            margin-bottom: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+            text-align: center;
         }
 
         .footer-logo {
-            font-size: 2rem;
+            font-size: 2.5rem;
             font-weight: 800;
             color: var(--primary-color);
-            margin-bottom: 1rem;
+            margin-bottom: 1.5rem;
         }
 
         .footer-text {
             color: #ccc;
-            max-width: 600px;
+            max-width: 700px;
             margin: 0 auto 2rem;
+            line-height: 1.8;
+            font-size: 1.05rem;
         }
 
         .institution {
             color: var(--primary-color);
             font-weight: 600;
-            margin-bottom: 2rem;
+            margin: 2rem 0;
+            font-size: 1.1rem;
+        }
+
+        .footer-socials {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .footer-socials a {
+            width: 50px;
+            height: 50px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.3rem;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+
+        .footer-socials a:hover {
+            background: var(--primary-color);
+            transform: translateY(-5px);
+        }
+
+        .footer-bottom {
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            color: #999;
+            font-size: 0.95rem;
         }
 
         /* Animations */
@@ -444,37 +677,17 @@
             }
         }
 
-        /* Responsive */
-        @media (max-width: 768px) {
-            .hero-container {
-                grid-template-columns: 1fr;
-                text-align: center;
+        @keyframes pulse {
+            0%, 100% { 
+                opacity: 1;
+                transform: scale(1);
             }
-
-            .hero-content h1 {
-                font-size: 2.5rem;
-            }
-
-            .nav-links {
-                display: none;
-            }
-
-            .features-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .phone-mockup {
-                width: 250px;
-                height: 500px;
+            50% { 
+                opacity: 0.8;
+                transform: scale(1.05);
             }
         }
 
-        /* Smooth scrolling */
-        html {
-            scroll-behavior: smooth;
-        }
-
-        /* Interactive elements */
         .interactive-hand {
             display: inline-block;
             animation: wave 2s ease-in-out infinite;
@@ -486,13 +699,43 @@
             75% { transform: rotate(-20deg); }
         }
 
-        .pulse {
-            animation: pulse 2s ease-in-out infinite;
-        }
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero-container {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
 
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.7; }
+            .hero-content h1 {
+                font-size: 2.8rem;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .features-grid,
+            .team-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .phone-mockup {
+                width: 280px;
+                height: 560px;
+            }
+
+            .section-title h2 {
+                font-size: 2.2rem;
+            }
+
+            .cta-buttons {
+                flex-direction: column;
+            }
+
+            .badge-container {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
         }
     </style>
 </head>
@@ -501,46 +744,92 @@
     <nav>
         <div class="nav-container">
             <div class="logo">
-                <img src="img/image-removebg-preview (4) 1.png" width="250px" alt="Signo Translate Logo">
+                <div class="logo-img"><img src="img/image-removebg-preview (4) 1.png" width="50px"></div>
                 <h2>SIGNO TRANSLATE</h2>
             </div>
             <ul class="nav-links">
                 <li><a href="#inicio">Inicio</a></li>
+                <li><a href="#video">Video</a></li>
                 <li><a href="#funciones">Funciones</a></li>
                 <li><a href="#impacto">Impacto</a></li>
                 <li><a href="#equipo">Equipo</a></li>
                 <li><a href="#contacto">Contacto</a></li>
+                <div class="social-nav">
+                    <a href="https://github.com/danxchemical" target="_blank" title="GitHub">
+                        <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                        </svg>
+                    </a>
+                    <a href="https://www.instagram.com/lib.zzzphp" target="_blank" title="Instagram">
+                        <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                        </svg>
+                    </a>
+                </div>
             </ul>
         </div>
     </nav>
-
+<BR>
+    <BR>
     <!-- Hero Section -->
-    <section id="inicio" class="hero">
+    <section id="inicio">
         <div class="hero-container">
             <div class="hero-content">
-                  <br>
-                <br>
-                <br>
-                <br>
                 <h1>Rompiendo <span class="interactive-hand">👋</span><br>Barreras<br>Comunicativas</h1>
                 <p class="subtitle">La primera aplicación colombiana que traduce y enseña lengua de señas</p>
+                <div class="badge-container">
+                    <span class="badge">🏆 1° Lugar Departamental</span>
+                    <span class="badge">🇵🇪 Perú 2025</span>
+                </div>
                 <p class="description">Conectando a la comunidad sorda de Barrancabermeja con el mundo a través de tecnología innovadora y educación inclusiva.</p>
-                <a href="#funciones" class="cta-button">Descubre Más</a>
+                <div class="cta-buttons">
+                    <a href="#video" class="cta-button">Ver Video</a>
+                    <a href="#funciones" class="cta-button cta-secondary">Descubre Más</a>
+                </div>
             </div>
             <div class="hero-visual">
                 <div class="phone-mockup">
                     <div class="phone-screen">
-                        <div style="font-size: 4rem; margin-bottom: 1rem;" class="pulse">🤟</div>
-                        <h3>Signo Translate</h3>
-                        <p>Tu puente hacia la comunicación inclusiva</p>
+                        <div class="icon">🤟</div>
+                        <h3 style="font-size: 1.8rem; margin-bottom: 0.5rem;">Signo Translate</h3>
+                        <p style="font-size: 1.05rem;">Tu puente hacia la comunicación inclusiva</p>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
+    <!-- Video Section -->
+    <section id="video" class="video-section">
+        <div class="container">
+            <div class="section-title">
+                <h2>Conoce Nuestro Proyecto</h2>
+                <p>Descubre cómo Signo Translate está transformando la comunicación</p>
+            </div>
+            <div class="video-container">
+                <div class="video-wrapper">
+                    <video controls poster="">
+                        <source src="SIGNO.mp4" type="video/mp4">
+                        Tu navegador no soporta el elemento de video.
+                    </video>
+                    <!-- Placeholder si no hay video -->
+                    <div class="video-placeholder" style="display: none;">
+                        <div style="text-align: center;">
+                            <div style="font-size: 5rem; margin-bottom: 1rem;">🎥</div>
+                            <p style="font-size: 1.2rem;">Video Promocional</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="video-info">
+                    <h3>Video Promocional - Signo Translate</h3>
+                    <p>Conoce más sobre nuestra misión de crear un mundo más inclusivo</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- Funciones Section -->
-    <section id="funciones" class="section">
+    <section id="funciones">
         <div class="container">
             <div class="section-title">
                 <h2>Funciones Innovadoras</h2>
@@ -582,16 +871,16 @@
     </section>
 
     <!-- Stats Section -->
-    <section id="impacto" class="section stats">
+    <section id="impacto" class="stats">
         <div class="container">
             <div class="section-title">
                 <h2>Nuestro Impacto</h2>
-                <p>Transformando vidas en Barrancabermeja</p>
+                <p>Transformando vidas en Barrancabermeja y más allá</p>
             </div>
             <div class="stats-grid">
                 <div class="stat-item">
                     <h3>1°</h3>
-                    <p>Lugar Distrital<br>Feria de Ciencias</p>
+                    <p>Lugar Departamental<br>Feria de Ciencias</p>
                 </div>
                 <div class="stat-item">
                     <h3>100%</h3>
@@ -610,7 +899,7 @@
     </section>
 
     <!-- Team Section -->
-    <section id="equipo" class="section">
+    <section id="equipo">
         <div class="container">
             <div class="section-title">
                 <h2>Nuestro Equipo</h2>
@@ -620,14 +909,39 @@
                 <div class="team-card">
                     <div class="team-avatar">👨‍💻</div>
                     <h3>Daniel Libardo Torres Calderón</h3>
-                    <div class="role">Líder del Grupo y Desarrollador</div>
+                    <div class="role">Líder del Proyecto y Desarrollador Principal</div>
                     <p>Estudiante apasionado por la tecnología y la inclusión social. Responsable del desarrollo técnico y la visión del proyecto.</p>
+                    <div class="team-socials">
+                        <a href="https://github.com/danxchemical" target="_blank" title="GitHub">
+                            <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                            </svg>
+                        </a>
+                        <a href="https://www.instagram.com/lib.zzzphp" target="_blank" title="Instagram">
+                            <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                            </svg>
+                        </a>
+                        <a href="https://wa.me/573009741612" target="_blank" title="WhatsApp">
+                            <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
+                            </svg>
+                        </a>
+                    </div>
                 </div>
                 <div class="team-card">
-                    <div class="team-avatar">🧑‍🎓</div>
+                    <div class="team-avatar">👨‍🔬</div>
                     <h3>Juan Daniel Galeano Marrugo</h3>
-                    <div class="role">Ayudante del Grupo e Investigador</div>
-                    <p>Estudiante comprometido con la investigación sobre lengua de señas colombiana y el desarrollo de soluciones inclusivas.</p>
+                    <div class="role">Investigador y Colaborador</div>
+                    <p>Especializado en investigación sobre lengua de señas colombiana y metodologías de enseñanza inclusiva.</p>
+                                    <div class="team-socials">
+                        <a href="https://www.instagram.com/dxnielgxz" target="_blank" title="Instagram">
+                            <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                            </svg>
+                        </a>
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -635,30 +949,53 @@
 
     <!-- Footer -->
     <footer id="contacto">
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-logo">SIGNO TRANSLATE</div>
-                <p class="footer-text">
-                    Proyecto innovador desarrollado por estudiantes del Instituto Técnico Veintiséis de Marzo, 
-                    comprometidos con la creación de tecnología inclusiva que rompa las barreras comunicativas 
-                    entre la comunidad sorda y oyente en Colombia.
-                </p>
-                <div class="institution">Instituto Técnico Veintiséis de Marzo<br>Barrancabermeja, Santander</div>
-                <p style="color: #666; font-size: 0.9rem;">
-                    © 2025 Signo Translate. Construyendo puentes hacia una comunicación más inclusiva.
-                </p>
+        <div class="footer-content">
+            <div class="footer-logo">SIGNO TRANSLATE</div>
+            <p class="footer-text">
+                Proyecto innovador desarrollado por estudiantes del Instituto Técnico Veintiséis de Marzo, 
+                comprometidos con la creación de tecnología inclusiva que rompa las barreras comunicativas 
+                entre la comunidad sorda y oyente en Colombia.
+            </p>
+            
+            <div class="institution">Instituto Técnico Veintiséis de Marzo<br>Barrancabermeja, Santander</div>
+            
+            <div class="footer-socials">
+                <a href="https://github.com/danxchemical" target="_blank" title="GitHub">
+                    <svg width="22" height="22" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                    </svg>
+                </a>
+                <a href="https://www.instagram.com/lib.zzzphp" target="_blank" title="Instagram">
+                    <svg width="22" height="22" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                    </svg>
+                </a>
+                <a href="https://wa.me/573009741612" target="_blank" title="WhatsApp">
+                    <svg width="22" height="22" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
+                    </svg>
+                </a>
+            </div>
+
+            <div class="footer-bottom">
+                <p>© 2025 Signo Translate. Construyendo puentes hacia una comunicación más inclusiva.</p>
+                <p style="margin-top: 0.5rem;">Desarrollado con 💝 por estudiantes comprometidos con la inclusión</p>
             </div>
         </div>
     </footer>
 
     <script>
-        // Smooth scrolling for navigation
+        // Smooth scrolling
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();
-                document.querySelector(this.getAttribute('href')).scrollIntoView({
-                    behavior: 'smooth'
-                });
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
             });
         });
 
@@ -667,40 +1004,58 @@
             const nav = document.querySelector('nav');
             if (window.scrollY > 100) {
                 nav.style.background = 'rgba(255, 255, 255, 0.98)';
-                nav.style.boxShadow = '0 2px 30px rgba(0,0,0,0.15)';
+                nav.style.boxShadow = '0 5px 30px rgba(0,0,0,0.15)';
             } else {
-                nav.style.background = 'rgba(255, 255, 255, 0.95)';
+                nav.style.background = 'rgba(255, 255, 255, 0.98)';
                 nav.style.boxShadow = '0 2px 20px rgba(0,0,0,0.1)';
             }
         });
 
-        // Counter animation for stats
+        // Intersection Observer for animations
         const observerOptions = {
-            threshold: 0.7
+            threshold: 0.2,
+            rootMargin: '0px 0px -50px 0px'
         };
 
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
-                    entry.target.style.animation = 'slideUp 0.6s ease forwards';
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
                 }
             });
         }, observerOptions);
 
+        // Observe elements
         document.querySelectorAll('.feature-card, .team-card, .stat-item').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(30px)';
+            el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
             observer.observe(el);
         });
 
-        // Add some interactive elements
+        // Enhanced hover effects for feature cards
         document.querySelectorAll('.feature-card').forEach(card => {
             card.addEventListener('mouseenter', () => {
-                card.style.transform = 'translateY(-10px) scale(1.02)';
+                card.style.transform = 'translateY(-15px)';
             });
             
             card.addEventListener('mouseleave', () => {
-                card.style.transform = 'translateY(-10px) scale(1)';
+                card.style.transform = 'translateY(0)';
             });
         });
+
+        // Video error handling
+        const video = document.querySelector('video');
+        const videoPlaceholder = document.querySelector('.video-placeholder');
+        
+        if (video) {
+            video.addEventListener('error', () => {
+                if (videoPlaceholder) {
+                    videoPlaceholder.style.display = 'flex';
+                }
+            });
+        }
     </script>
 </body>
 </html>
