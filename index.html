@@ -4,10 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Signo Translate - Rompiendo Barreras Comunicativas</title>
-
     <link rel="icon" type="image/x-icon" href="img/ico.ico">
-
-
     <style>
         * {
             margin: 0;
@@ -22,30 +19,71 @@
             --dark-color: #2C2C2C;
             --light-color: #FFFFFF;
             --gradient: linear-gradient(135deg, #D1A68B 0%, #8B7355 100%);
+            --gradient-reverse: linear-gradient(135deg, #8B7355 0%, #D1A68B 100%);
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
             line-height: 1.6;
             color: #333;
             overflow-x: hidden;
+            background: #fff;
         }
 
         html {
             scroll-behavior: smooth;
         }
 
-        /* Navegación */
+        /* Loader */
+        .loader-wrapper {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--gradient);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            transition: opacity 0.5s, visibility 0.5s;
+        }
+
+        .loader-wrapper.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .loader {
+            width: 80px;
+            height: 80px;
+            border: 5px solid rgba(255,255,255,0.3);
+            border-top: 5px solid white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Navegación Mejorada */
         nav {
             position: fixed;
             top: 0;
             width: 100%;
-            background: rgba(255, 255, 255, 0.98);
-            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
             z-index: 1000;
             padding: 1rem 0;
-            transition: all 0.3s ease;
-            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 2px 20px rgba(0,0,0,0.08);
+        }
+
+        nav.scrolled {
+            padding: 0.7rem 0;
+            background: rgba(255, 255, 255, 0.98);
+            box-shadow: 0 5px 30px rgba(0,0,0,0.12);
         }
 
         .nav-container {
@@ -61,23 +99,37 @@
             display: flex;
             align-items: center;
             gap: 1rem;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .logo:hover {
+            transform: scale(1.05);
         }
 
         .logo-img {
             width: 50px;
             height: 50px;
             background: var(--gradient);
-            border-radius: 10px;
+            border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 1.5rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(209, 166, 139, 0.3);
+        }
+
+        .logo:hover .logo-img {
+            transform: rotate(5deg);
+            box-shadow: 0 8px 25px rgba(209, 166, 139, 0.4);
         }
 
         .logo h2 {
             color: var(--dark-color);
             font-size: 1.5rem;
-            font-weight: 700;
+            font-weight: 800;
+            letter-spacing: -0.5px;
         }
 
         .nav-links {
@@ -90,28 +142,33 @@
         .nav-links a {
             text-decoration: none;
             color: var(--dark-color);
-            font-weight: 500;
-            transition: color 0.3s ease;
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
             position: relative;
-        }
-
-        .nav-links a:hover {
-            color: var(--primary-color);
+            padding: 0.5rem 0;
         }
 
         .nav-links a::after {
             content: '';
             position: absolute;
             width: 0;
-            height: 2px;
-            bottom: -5px;
-            left: 0;
+            height: 3px;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
             background: var(--gradient);
             transition: width 0.3s ease;
+            border-radius: 2px;
         }
 
-        .nav-links a:hover::after {
+        .nav-links a:hover::after,
+        .nav-links a.active::after {
             width: 100%;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary-color);
         }
 
         .social-nav {
@@ -120,17 +177,42 @@
         }
 
         .social-nav a {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             color: var(--dark-color);
             font-size: 1.2rem;
             transition: all 0.3s ease;
+            border-radius: 10px;
+            background: var(--accent-color);
         }
 
         .social-nav a:hover {
-            color: var(--primary-color);
+            background: var(--gradient);
+            color: white;
             transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(209, 166, 139, 0.3);
         }
 
-        /* Hero Section */
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+            padding: 5px;
+        }
+
+        .menu-toggle span {
+            width: 30px;
+            height: 3px;
+            background: var(--dark-color);
+            border-radius: 2px;
+            transition: all 0.3s ease;
+        }
+
+        /* Hero Section Mejorado */
         #inicio {
             min-height: 100vh;
             background: var(--gradient);
@@ -141,15 +223,69 @@
             padding-top: 80px;
         }
 
-        .hero::before {
-            content: '';
+        .hero-background {
             position: absolute;
             top: 0;
             left: 0;
             right: 0;
             bottom: 0;
-            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="1" fill="white" opacity="0.1"/><circle cx="75" cy="75" r="1" fill="white" opacity="0.1"/><circle cx="50" cy="10" r="0.5" fill="white" opacity="0.15"/><circle cx="90" cy="40" r="0.5" fill="white" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
-            opacity: 0.3;
+            opacity: 0.1;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(255,255,255,0.2) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(255,255,255,0.15) 0%, transparent 50%),
+                radial-gradient(circle at 40% 20%, rgba(255,255,255,0.1) 0%, transparent 50%);
+        }
+
+        .floating-shapes {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .shape {
+            position: absolute;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+        }
+
+        .shape:nth-child(1) {
+            width: 300px;
+            height: 300px;
+            top: 10%;
+            left: 10%;
+            animation: float1 20s infinite ease-in-out;
+        }
+
+        .shape:nth-child(2) {
+            width: 200px;
+            height: 200px;
+            top: 60%;
+            right: 15%;
+            animation: float2 15s infinite ease-in-out;
+        }
+
+        .shape:nth-child(3) {
+            width: 150px;
+            height: 150px;
+            bottom: 20%;
+            left: 50%;
+            animation: float3 18s infinite ease-in-out;
+        }
+
+        @keyframes float1 {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            50% { transform: translate(50px, 50px) rotate(180deg); }
+        }
+
+        @keyframes float2 {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            50% { transform: translate(-30px, 30px) rotate(-180deg); }
+        }
+
+        @keyframes float3 {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(30px, -30px) scale(1.1); }
         }
 
         .hero-container {
@@ -158,32 +294,34 @@
             padding: 0 3%;
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 4rem;
+            gap: 5rem;
             align-items: center;
             position: relative;
             z-index: 1;
         }
 
         .hero-content h1 {
-            font-size: 4rem;
-            font-weight: 800;
+            font-size: 4.5rem;
+            font-weight: 900;
             color: white;
             margin-bottom: 1.5rem;
-            line-height: 1.2;
+            line-height: 1.1;
             animation: slideUp 1s ease;
+            letter-spacing: -2px;
         }
 
         .hero-content .subtitle {
-            font-size: 1.4rem;
+            font-size: 1.5rem;
             color: rgba(255,255,255,0.95);
             margin-bottom: 2rem;
             animation: slideUp 1s ease 0.2s both;
-            font-weight: 500;
+            font-weight: 600;
+            line-height: 1.4;
         }
 
         .hero-content .description {
             font-size: 1.15rem;
-            color: rgba(255,255,255,0.85);
+            color: rgba(255,255,255,0.88);
             margin-bottom: 3rem;
             animation: slideUp 1s ease 0.4s both;
             line-height: 1.8;
@@ -192,42 +330,74 @@
         .badge-container {
             display: flex;
             gap: 1rem;
-            margin-bottom: 2rem;
+            margin-bottom: 2.5rem;
             animation: slideUp 1s ease 0.5s both;
+            flex-wrap: wrap;
         }
 
         .badge {
-            background: rgba(255,255,255,0.2);
-            backdrop-filter: blur(10px);
-            padding: 0.5rem 1.2rem;
-            border-radius: 25px;
+            background: rgba(255,255,255,0.25);
+            backdrop-filter: blur(15px);
+            padding: 0.7rem 1.5rem;
+            border-radius: 30px;
             color: white;
-            font-weight: 600;
-            font-size: 0.9rem;
+            font-weight: 700;
+            font-size: 0.95rem;
+            border: 2px solid rgba(255,255,255,0.3);
+            transition: all 0.3s ease;
+            cursor: default;
+        }
+
+        .badge:hover {
+            background: rgba(255,255,255,0.35);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
         }
 
         .cta-buttons {
             display: flex;
-            gap: 1rem;
+            gap: 1.5rem;
             animation: slideUp 1s ease 0.6s both;
         }
 
         .cta-button {
-            display: inline-block;
-            padding: 1.2rem 2.5rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.8rem;
+            padding: 1.3rem 3rem;
             background: white;
             color: var(--primary-color);
             text-decoration: none;
             border-radius: 50px;
-            font-weight: 600;
+            font-weight: 700;
             font-size: 1.1rem;
-            transition: all 0.3s ease;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-button::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(209, 166, 139, 0.2);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .cta-button:hover::before {
+            width: 300px;
+            height: 300px;
         }
 
         .cta-button:hover {
             transform: translateY(-5px);
-            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+            box-shadow: 0 20px 45px rgba(0,0,0,0.25);
         }
 
         .cta-secondary {
@@ -245,15 +415,18 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            animation: float 3s ease-in-out infinite;
+            animation: float 6s ease-in-out infinite;
+            position: relative;
         }
 
         .phone-mockup {
-            width: 320px;
-            height: 640px;
-            background: var(--light-color);
-            border-radius: 40px;
-            box-shadow: 0 30px 80px rgba(0,0,0,0.4);
+            width: 340px;
+            height: 680px;
+            background: linear-gradient(145deg, #ffffff, #f0f0f0);
+            border-radius: 45px;
+            box-shadow: 
+                0 50px 100px rgba(0,0,0,0.3),
+                0 0 0 15px rgba(255,255,255,0.1);
             padding: 2rem;
             display: flex;
             flex-direction: column;
@@ -261,43 +434,92 @@
             justify-content: center;
             position: relative;
             overflow: hidden;
+            transform-style: preserve-3d;
         }
 
         .phone-mockup::before {
             content: '';
             position: absolute;
-            top: 15px;
+            top: 20px;
             left: 50%;
             transform: translateX(-50%);
-            width: 80px;
-            height: 5px;
-            background: #ccc;
+            width: 100px;
+            height: 6px;
+            background: #d0d0d0;
             border-radius: 3px;
+        }
+
+        .phone-mockup::after {
+            content: '';
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            width: 15px;
+            height: 15px;
+            background: #333;
+            border-radius: 50%;
         }
 
         .phone-screen {
             width: 100%;
             height: 100%;
             background: var(--gradient);
-            border-radius: 30px;
+            border-radius: 35px;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             color: white;
             text-align: center;
-            padding: 2.5rem;
+            padding: 3rem 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .phone-screen::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: screenGlow 8s linear infinite;
+        }
+
+        @keyframes screenGlow {
+            0% { transform: translate(0, 0) rotate(0deg); }
+            100% { transform: translate(50%, 50%) rotate(360deg); }
         }
 
         .phone-screen .icon {
-            font-size: 5rem;
-            margin-bottom: 1.5rem;
-            animation: pulse 2s ease-in-out infinite;
+            font-size: 6rem;
+            margin-bottom: 2rem;
+            animation: pulse 3s ease-in-out infinite;
+            filter: drop-shadow(0 10px 20px rgba(0,0,0,0.3));
+            position: relative;
+            z-index: 1;
         }
 
-        /* Secciones */
+        .phone-screen h3 {
+            font-size: 2rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .phone-screen p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Secciones Mejoradas */
         section {
-            padding: 6rem 3%;
+            padding: 8rem 3%;
+            position: relative;
         }
 
         .container {
@@ -307,16 +529,18 @@
 
         .section-title {
             text-align: center;
-            margin-bottom: 4rem;
+            margin-bottom: 5rem;
+            animation: fadeInUp 1s ease;
         }
 
         .section-title h2 {
-            font-size: 3rem;
+            font-size: 3.5rem;
             color: var(--dark-color);
-            margin-bottom: 1rem;
+            margin-bottom: 1.5rem;
             position: relative;
             display: inline-block;
-            font-weight: 800;
+            font-weight: 900;
+            letter-spacing: -1px;
         }
 
         .section-title h2::after {
@@ -325,30 +549,58 @@
             bottom: -15px;
             left: 50%;
             transform: translateX(-50%);
-            width: 80px;
-            height: 4px;
+            width: 100px;
+            height: 5px;
             background: var(--gradient);
-            border-radius: 2px;
+            border-radius: 3px;
         }
 
         .section-title p {
             color: #666;
-            font-size: 1.2rem;
-            margin-top: 1.5rem;
+            font-size: 1.3rem;
+            margin-top: 2rem;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.6;
         }
 
-        /* Video Section */
+        /* Video Section Mejorado */
         .video-section {
-            background: var(--accent-color);
+            background: 
+                linear-gradient(135deg, #F4E8D8 0%, #fff 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .video-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 200px;
+            background: linear-gradient(to bottom, transparent, #F4E8D8);
+            pointer-events: none;
         }
 
         .video-container {
-            max-width: 1000px;
+            max-width: 1100px;
             margin: 0 auto;
             background: white;
-            border-radius: 20px;
+            border-radius: 30px;
             overflow: hidden;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+            box-shadow: 
+                0 30px 80px rgba(0,0,0,0.15),
+                0 0 0 1px rgba(0,0,0,0.05);
+            transition: all 0.4s ease;
+        }
+
+        .video-container:hover {
+            transform: translateY(-10px);
+            box-shadow: 
+                0 40px 100px rgba(0,0,0,0.2),
+                0 0 0 1px rgba(0,0,0,0.05);
         }
 
         .video-wrapper {
@@ -356,6 +608,7 @@
             padding-bottom: 56.25%;
             height: 0;
             overflow: hidden;
+            background: #000;
         }
 
         .video-wrapper video {
@@ -367,50 +620,40 @@
             object-fit: cover;
         }
 
-        .video-placeholder {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: var(--gradient);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 4rem;
-        }
-
         .video-info {
-            padding: 2rem;
+            padding: 2.5rem;
             text-align: center;
+            background: linear-gradient(to bottom, white, #fafafa);
         }
 
         .video-info h3 {
             color: var(--dark-color);
-            font-size: 1.5rem;
-            margin-bottom: 0.5rem;
+            font-size: 1.8rem;
+            margin-bottom: 0.8rem;
+            font-weight: 800;
         }
 
         .video-info p {
             color: #666;
+            font-size: 1.1rem;
         }
 
-        /* Features Grid */
+        /* Features Grid Mejorado */
         .features-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 2.5rem;
+            grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+            gap: 3rem;
         }
 
         .feature-card {
             background: white;
-            padding: 3rem;
-            border-radius: 20px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.08);
-            transition: all 0.4s ease;
+            padding: 3.5rem 3rem;
+            border-radius: 25px;
+            box-shadow: 0 15px 50px rgba(0,0,0,0.08);
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
             overflow: hidden;
+            border: 1px solid rgba(0,0,0,0.05);
         }
 
         .feature-card::before {
@@ -419,55 +662,93 @@
             top: 0;
             left: 0;
             right: 0;
-            height: 5px;
+            height: 6px;
             background: var(--gradient);
             transform: translateX(-100%);
-            transition: transform 0.4s ease;
+            transition: transform 0.5s ease;
+        }
+
+        .feature-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at top left, rgba(209, 166, 139, 0.05), transparent 60%);
+            opacity: 0;
+            transition: opacity 0.5s ease;
         }
 
         .feature-card:hover::before {
             transform: translateX(0);
         }
 
+        .feature-card:hover::after {
+            opacity: 1;
+        }
+
         .feature-card:hover {
-            transform: translateY(-15px);
-            box-shadow: 0 25px 60px rgba(0,0,0,0.15);
+            transform: translateY(-20px);
+            box-shadow: 0 30px 70px rgba(0,0,0,0.15);
         }
 
         .feature-icon {
-            width: 90px;
-            height: 90px;
+            width: 100px;
+            height: 100px;
             background: var(--gradient);
-            border-radius: 20px;
+            border-radius: 25px;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin-bottom: 2rem;
-            font-size: 2.5rem;
-            transition: all 0.3s ease;
+            margin-bottom: 2.5rem;
+            font-size: 3rem;
+            transition: all 0.4s ease;
+            box-shadow: 0 10px 30px rgba(209, 166, 139, 0.3);
+            position: relative;
+            z-index: 1;
         }
 
         .feature-card:hover .feature-icon {
-            transform: scale(1.1) rotate(5deg);
+            transform: scale(1.15) rotate(10deg);
+            box-shadow: 0 15px 40px rgba(209, 166, 139, 0.4);
         }
 
         .feature-card h3 {
-            font-size: 1.6rem;
+            font-size: 1.8rem;
             color: var(--dark-color);
-            margin-bottom: 1rem;
-            font-weight: 700;
+            margin-bottom: 1.2rem;
+            font-weight: 800;
+            position: relative;
+            z-index: 1;
         }
 
         .feature-card p {
             color: #666;
-            line-height: 1.8;
-            font-size: 1.05rem;
+            line-height: 1.9;
+            font-size: 1.1rem;
+            position: relative;
+            z-index: 1;
         }
 
-        /* Stats Section */
+        /* Stats Section Mejorado */
         .stats {
             background: var(--dark-color);
             color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stats::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(209, 166, 139, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(139, 115, 85, 0.1) 0%, transparent 50%);
         }
 
         .stats .section-title h2 {
@@ -479,192 +760,598 @@
         }
 
         .stats .section-title p {
-            color: rgba(255,255,255,0.8);
+            color: rgba(255,255,255,0.85);
         }
 
         .stats-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 4rem;
             text-align: center;
+            position: relative;
+            z-index: 1;
         }
 
         .stat-item {
-            transition: transform 0.3s ease;
+            transition: all 0.4s ease;
+            padding: 2rem;
+            border-radius: 20px;
+            background: rgba(255,255,255,0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.1);
         }
 
         .stat-item:hover {
-            transform: translateY(-10px);
+            transform: translateY(-15px) scale(1.05);
+            background: rgba(255,255,255,0.08);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
         }
 
         .stat-item h3 {
-            font-size: 4rem;
-            color: var(--primary-color);
-            font-weight: 800;
+            font-size: 5rem;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 900;
             margin-bottom: 1rem;
+            line-height: 1;
         }
 
         .stat-item p {
-            font-size: 1.1rem;
-            font-weight: 500;
+            font-size: 1.2rem;
+            font-weight: 600;
             line-height: 1.6;
+            color: rgba(255,255,255,0.9);
         }
 
-        /* Team Section */
+        /* Timeline Section - NUEVA */
+        .timeline-section {
+            background: linear-gradient(135deg, #fff 0%, #F4E8D8 100%);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .timeline {
+            position: relative;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: var(--gradient);
+            transform: translateX(-50%);
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 4rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .timeline-item:nth-child(odd) {
+            flex-direction: row;
+        }
+
+        .timeline-item:nth-child(even) {
+            flex-direction: row-reverse;
+        }
+
+        .timeline-content {
+            width: 45%;
+            background: white;
+            padding: 2.5rem;
+            border-radius: 20px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+            transition: all 0.4s ease;
+        }
+
+        .timeline-content:hover {
+            transform: scale(1.05);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.15);
+        }
+
+        .timeline-content h3 {
+            font-size: 1.6rem;
+            color: var(--dark-color);
+            margin-bottom: 1rem;
+            font-weight: 800;
+        }
+
+        .timeline-content p {
+            color: #666;
+            line-height: 1.8;
+        }
+
+        .timeline-dot {
+            position: absolute;
+            left: 50%;
+            width: 30px;
+            height: 30px;
+            background: var(--gradient);
+            border-radius: 50%;
+            transform: translateX(-50%);
+            border: 5px solid white;
+            box-shadow: 0 5px 15px rgba(209, 166, 139, 0.4);
+            z-index: 2;
+        }
+
+        /* Team Section Mejorado */
         .team-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 3rem;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 3.5rem;
             margin-top: 3rem;
         }
 
         .team-card {
             background: white;
-            padding: 3rem;
-            border-radius: 20px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            padding: 3.5rem 3rem;
+            border-radius: 30px;
+            box-shadow: 0 15px 50px rgba(0,0,0,0.1);
             text-align: center;
-            transition: all 0.3s ease;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .team-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(209, 166, 139, 0.05), transparent 60%);
+            transform: scale(0);
+            transition: transform 0.6s ease;
+        }
+
+        .team-card:hover::before {
+            transform: scale(1);
         }
 
         .team-card:hover {
-            transform: translateY(-15px);
-            box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+            transform: translateY(-20px);
+            box-shadow: 0 25px 70px rgba(0,0,0,0.15);
         }
 
         .team-avatar {
-            width: 130px;
-            height: 130px;
+            width: 150px;
+            height: 150px;
             background: var(--gradient);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin: 0 auto 2rem;
-            font-size: 3.5rem;
+            margin: 0 auto 2.5rem;
+            font-size: 4rem;
             color: white;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            box-shadow: 0 15px 40px rgba(209, 166, 139, 0.3);
+            transition: all 0.4s ease;
+            position: relative;
+            z-index: 1;
+        }
+
+        .team-card:hover .team-avatar {
+            transform: scale(1.1) rotate(5deg);
+            box-shadow: 0 20px 50px rgba(209, 166, 139, 0.4);
         }
 
         .team-card h3 {
-            font-size: 1.4rem;
+            font-size: 1.6rem;
             color: var(--dark-color);
-            margin-bottom: 0.5rem;
-            font-weight: 700;
+            margin-bottom: 0.8rem;
+            font-weight: 800;
+            position: relative;
+            z-index: 1;
         }
 
         .team-card .role {
             color: var(--primary-color);
-            font-weight: 600;
-            margin-bottom: 1rem;
-            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            font-size: 1.15rem;
+            position: relative;
+            z-index: 1;
         }
 
         .team-card p {
             color: #666;
-            line-height: 1.7;
+            line-height: 1.8;
+            font-size: 1.05rem;
+            position: relative;
+            z-index: 1;
         }
 
         .team-socials {
             display: flex;
             justify-content: center;
             gap: 1rem;
-            margin-top: 1.5rem;
+            margin-top: 2rem;
+            position: relative;
+            z-index: 1;
         }
 
         .team-socials a {
-            width: 40px;
-            height: 40px;
+            width: 45px;
+            height: 45px;
             background: var(--accent-color);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             color: var(--primary-color);
-            transition: all 0.3s ease;
+            transition: all 0.4s ease;
             text-decoration: none;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
         }
 
         .team-socials a:hover {
             background: var(--gradient);
             color: white;
-            transform: translateY(-3px);
+            transform: translateY(-5px) scale(1.1);
+            box-shadow: 0 10px 25px rgba(209, 166, 139, 0.3);
         }
 
-        /* Footer */
+        /* CTA Section - NUEVA */
+        .cta-section {
+            background: var(--gradient);
+            color: white;
+            text-align: center;
+            padding: 8rem 3%;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 30% 50%, rgba(255,255,255,0.1) 0%, transparent 50%),
+                radial-gradient(circle at 70% 80%, rgba(255,255,255,0.08) 0%, transparent 50%);
+        }
+
+        .cta-content {
+            max-width: 900px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .cta-content h2 {
+            font-size: 3.5rem;
+            font-weight: 900;
+            margin-bottom: 1.5rem;
+            letter-spacing: -1px;
+        }
+
+        .cta-content p {
+            font-size: 1.4rem;
+            margin-bottom: 3rem;
+            opacity: 0.95;
+            line-height: 1.6;
+        }
+
+        .cta-buttons-large {
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .cta-button-large {
+            padding: 1.5rem 3.5rem;
+            background: white;
+            color: var(--primary-color);
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 800;
+            font-size: 1.2rem;
+            transition: all 0.4s ease;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+            display: inline-flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .cta-button-large:hover {
+            transform: translateY(-8px) scale(1.05);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.3);
+        }
+
+        /* Gallery Section - NUEVA */
+        .gallery-section {
+            background: #fafafa;
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .gallery-item {
+            position: relative;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+            transition: all 0.4s ease;
+            cursor: pointer;
+            aspect-ratio: 1;
+            background: var(--gradient);
+        }
+
+        .gallery-item:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 25px 60px rgba(0,0,0,0.15);
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s ease;
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.1);
+        }
+
+        .gallery-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+            padding: 2rem;
+            transform: translateY(100%);
+            transition: transform 0.4s ease;
+        }
+
+        .gallery-item:hover .gallery-overlay {
+            transform: translateY(0);
+        }
+
+        .gallery-overlay h3 {
+            color: white;
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .gallery-overlay p {
+            color: rgba(255,255,255,0.9);
+            font-size: 0.95rem;
+        }
+
+        /* FAQ Section - NUEVA */
+        .faq-section {
+            background: white;
+        }
+
+        .faq-container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .faq-item {
+            background: white;
+            border-radius: 20px;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .faq-item:hover {
+            box-shadow: 0 15px 40px rgba(0,0,0,0.12);
+        }
+
+        .faq-question {
+            padding: 2rem 2.5rem;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 700;
+            font-size: 1.2rem;
+            color: var(--dark-color);
+            transition: all 0.3s ease;
+        }
+
+        .faq-question:hover {
+            color: var(--primary-color);
+        }
+
+        .faq-question::after {
+            content: '+';
+            font-size: 2rem;
+            font-weight: 300;
+            transition: transform 0.3s ease;
+        }
+
+        .faq-item.active .faq-question::after {
+            transform: rotate(45deg);
+        }
+
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: all 0.4s ease;
+            padding: 0 2.5rem;
+        }
+
+        .faq-item.active .faq-answer {
+            max-height: 500px;
+            padding: 0 2.5rem 2rem;
+        }
+
+        .faq-answer p {
+            color: #666;
+            line-height: 1.8;
+            font-size: 1.05rem;
+        }
+
+        /* Footer Mejorado */
         footer {
             background: var(--dark-color);
             color: white;
-            padding: 4rem 3% 2rem;
+            padding: 5rem 3% 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 20%, rgba(209, 166, 139, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(139, 115, 85, 0.08) 0%, transparent 50%);
+            pointer-events: none;
         }
 
         .footer-content {
             max-width: 1400px;
             margin: 0 auto;
             text-align: center;
+            position: relative;
+            z-index: 1;
         }
 
         .footer-logo {
-            font-size: 2.5rem;
-            font-weight: 800;
-            color: var(--primary-color);
-            margin-bottom: 1.5rem;
+            font-size: 3rem;
+            font-weight: 900;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 2rem;
+            letter-spacing: -1px;
         }
 
         .footer-text {
-            color: #ccc;
-            max-width: 700px;
-            margin: 0 auto 2rem;
-            line-height: 1.8;
-            font-size: 1.05rem;
+            color: rgba(255,255,255,0.8);
+            max-width: 800px;
+            margin: 0 auto 2.5rem;
+            line-height: 1.9;
+            font-size: 1.1rem;
         }
 
         .institution {
             color: var(--primary-color);
-            font-weight: 600;
-            margin: 2rem 0;
-            font-size: 1.1rem;
+            font-weight: 700;
+            margin: 2.5rem 0;
+            font-size: 1.2rem;
+            letter-spacing: 0.5px;
         }
 
         .footer-socials {
             display: flex;
             justify-content: center;
             gap: 1.5rem;
-            margin: 2rem 0;
+            margin: 3rem 0;
         }
 
         .footer-socials a {
-            width: 50px;
-            height: 50px;
+            width: 55px;
+            height: 55px;
             background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             color: white;
-            font-size: 1.3rem;
-            transition: all 0.3s ease;
+            font-size: 1.4rem;
+            transition: all 0.4s ease;
             text-decoration: none;
+            border: 2px solid rgba(255,255,255,0.1);
         }
 
         .footer-socials a:hover {
-            background: var(--primary-color);
-            transform: translateY(-5px);
+            background: var(--gradient);
+            transform: translateY(-8px) scale(1.1);
+            box-shadow: 0 15px 35px rgba(209, 166, 139, 0.4);
+            border-color: transparent;
         }
 
         .footer-bottom {
-            margin-top: 3rem;
-            padding-top: 2rem;
+            margin-top: 4rem;
+            padding-top: 2.5rem;
             border-top: 1px solid rgba(255,255,255,0.1);
-            color: #999;
-            font-size: 0.95rem;
+            color: rgba(255,255,255,0.6);
+            font-size: 1rem;
+        }
+
+        .footer-bottom p {
+            margin: 0.5rem 0;
+        }
+
+        /* Scroll to Top Button */
+        .scroll-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 55px;
+            height: 55px;
+            background: var(--gradient);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.4s ease;
+            z-index: 999;
+            box-shadow: 0 10px 30px rgba(209, 166, 139, 0.4);
+        }
+
+        .scroll-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .scroll-top:hover {
+            transform: translateY(-5px) scale(1.1);
+            box-shadow: 0 15px 40px rgba(209, 166, 139, 0.5);
         }
 
         /* Animations */
         @keyframes slideUp {
             from {
                 opacity: 0;
-                transform: translateY(50px);
+                transform: translateY(60px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
             }
             to {
                 opacity: 1;
@@ -677,7 +1364,7 @@
                 transform: translateY(0);
             }
             50% {
-                transform: translateY(-20px);
+                transform: translateY(-25px);
             }
         }
 
@@ -687,35 +1374,64 @@
                 transform: scale(1);
             }
             50% { 
-                opacity: 0.8;
-                transform: scale(1.05);
+                opacity: 0.85;
+                transform: scale(1.08);
             }
         }
 
         .interactive-hand {
             display: inline-block;
-            animation: wave 2s ease-in-out infinite;
+            animation: wave 2.5s ease-in-out infinite;
         }
 
         @keyframes wave {
             0%, 100% { transform: rotate(0deg); }
-            25% { transform: rotate(20deg); }
-            75% { transform: rotate(-20deg); }
+            10%, 30% { transform: rotate(20deg); }
+            20%, 40% { transform: rotate(-15deg); }
+            50%, 100% { transform: rotate(0deg); }
         }
 
-        /* Responsive */
-        @media (max-width: 768px) {
+        /* Parallax Effect */
+        .parallax {
+            transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1200px) {
+            .hero-container {
+                gap: 3rem;
+            }
+            
+            .section-title h2 {
+                font-size: 3rem;
+            }
+        }
+
+        @media (max-width: 968px) {
             .hero-container {
                 grid-template-columns: 1fr;
                 text-align: center;
+                gap: 4rem;
             }
 
             .hero-content h1 {
-                font-size: 2.8rem;
+                font-size: 3.5rem;
+            }
+
+            .badge-container {
+                justify-content: center;
+            }
+
+            .cta-buttons {
+                justify-content: center;
             }
 
             .nav-links {
                 display: none;
+            }
+
+            .menu-toggle {
+                display: flex;
             }
 
             .features-grid,
@@ -724,79 +1440,191 @@
             }
 
             .phone-mockup {
-                width: 280px;
-                height: 560px;
+                width: 300px;
+                height: 600px;
             }
 
             .section-title h2 {
-                font-size: 2.2rem;
+                font-size: 2.5rem;
+            }
+
+            .timeline::before {
+                left: 30px;
+            }
+
+            .timeline-item {
+                flex-direction: row !important;
+                padding-left: 80px;
+            }
+
+            .timeline-content {
+                width: 100%;
+            }
+
+            .timeline-dot {
+                left: 30px;
+            }
+
+            .cta-content h2 {
+                font-size: 2.5rem;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 2rem;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .hero-content h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero-content .subtitle {
+                font-size: 1.2rem;
             }
 
             .cta-buttons {
                 flex-direction: column;
+                width: 100%;
             }
 
-            .badge-container {
-                flex-wrap: wrap;
+            .cta-button {
+                width: 100%;
                 justify-content: center;
+            }
+
+            section {
+                padding: 5rem 5%;
+            }
+
+            .section-title h2 {
+                font-size: 2rem;
+            }
+
+            .section-title p {
+                font-size: 1.1rem;
+            }
+
+            .feature-card,
+            .team-card {
+                padding: 2.5rem 2rem;
+            }
+
+            .phone-mockup {
+                width: 260px;
+                height: 520px;
+            }
+
+            .phone-screen .icon {
+                font-size: 4rem;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stat-item h3 {
+                font-size: 3.5rem;
+            }
+
+            .footer-logo {
+                font-size: 2rem;
+            }
+
+            .gallery-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .cta-content h2 {
+                font-size: 2rem;
+            }
+
+            .cta-content p {
+                font-size: 1.1rem;
             }
         }
     </style>
 </head>
 <body>
+    <!-- Loader -->
+    <div class="loader-wrapper">
+        <div class="loader"></div>
+    </div>
+
+    <!-- Scroll to Top -->
+    <div class="scroll-top">↑</div>
+
     <!-- Navegación -->
     <nav>
         <div class="nav-container">
             <div class="logo">
-                <div class="logo-img"><img src="img/image-removebg-preview (4) 1.png" width="50px"></div>
+                <div class="logo-img"><img src="img/image-removebg-preview (4) 1.png" width="50px" alt="Logo"></div>
                 <h2>SIGNO TRANSLATE</h2>
             </div>
             <ul class="nav-links">
-                <li><a href="#inicio">Inicio</a></li>
-                <li><a href="#video">Video</a></li>
-                <li><a href="#funciones">Funciones</a></li>
-                <li><a href="#impacto">Impacto</a></li>
-                <li><a href="#equipo">Equipo</a></li>
-                <li><a href="#contacto">Contacto</a></li>
+                <li><a href="#inicio" class="nav-link">Inicio</a></li>
+                <li><a href="#video" class="nav-link">Video</a></li>
+                <li><a href="#funciones" class="nav-link">Funciones</a></li>
+                <li><a href="#timeline" class="nav-link">Historia</a></li>
+                <li><a href="#impacto" class="nav-link">Impacto</a></li>
+                <li><a href="#equipo" class="nav-link">Equipo</a></li>
+                <li><a href="#faq" class="nav-link">FAQ</a></li>
+                <li><a href="#contacto" class="nav-link">Contacto</a></li>
                 <div class="social-nav">
-                    <a href="https://github.com/danxchemical" target="_blank" title="GitHub">
+                    <a href="https://github.com/danxchemical" target="_blank" title="GitHub" aria-label="GitHub">
                         <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
                             <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
                         </svg>
                     </a>
-                    <a href="https://www.instagram.com/lib.zzzphp" target="_blank" title="Instagram">
+                    <a href="https://www.instagram.com/lib.zzzphp" target="_blank" title="Instagram" aria-label="Instagram">
                         <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
                             <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
                         </svg>
                     </a>
                 </div>
             </ul>
+            <div class="menu-toggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
         </div>
     </nav>
-<BR>
-    <BR>
+
     <!-- Hero Section -->
     <section id="inicio">
+        <div class="hero-background"></div>
+        <div class="floating-shapes">
+            <div class="shape"></div>
+            <div class="shape"></div>
+            <div class="shape"></div>
+        </div>
         <div class="hero-container">
-            <div class="hero-content">
+            <div class="hero-content parallax">
                 <h1>Rompiendo <span class="interactive-hand">👋</span><br>Barreras<br>Comunicativas</h1>
                 <p class="subtitle">La primera aplicación colombiana que traduce y enseña lengua de señas</p>
                 <div class="badge-container">
                     <span class="badge">🏆 1° Lugar Departamental</span>
                     <span class="badge">🇵🇪 Perú 2025</span>
+                    <span class="badge">🇨🇴 100% Colombiana</span>
                 </div>
-                <p class="description">Conectando a la comunidad sorda de Barrancabermeja con el mundo a través de tecnología innovadora y educación inclusiva.</p>
+                <p class="description">Conectando a la comunidad sorda de Barrancabermeja con el mundo a través de tecnología innovadora y educación inclusiva. Una solución integral que combina traducción instantánea, aprendizaje gamificado y accesibilidad universal.</p>
                 <div class="cta-buttons">
-                    <a href="#video" class="cta-button">Ver Video</a>
-                    <a href="#funciones" class="cta-button cta-secondary">Descubre Más</a>
+                    <a href="#video" class="cta-button">
+                        <span>▶</span> Ver Video
+                    </a>
+                    <a href="#funciones" class="cta-button cta-secondary">
+                        <span>✨</span> Descubre Más
+                    </a>
                 </div>
             </div>
-            <div class="hero-visual">
+            <div class="hero-visual parallax">
                 <div class="phone-mockup">
                     <div class="phone-screen">
                         <div class="icon">🤟</div>
-                        <h3 style="font-size: 1.8rem; margin-bottom: 0.5rem;">Signo Translate</h3>
-                        <p style="font-size: 1.05rem;">Tu puente hacia la comunicación inclusiva</p>
+                        <h3>Signo Translate</h3>
+                        <p>Tu puente hacia la comunicación inclusiva</p>
                     </div>
                 </div>
             </div>
@@ -808,7 +1636,7 @@
         <div class="container">
             <div class="section-title">
                 <h2>Conoce Nuestro Proyecto</h2>
-                <p>Descubre cómo Signo Translate está transformando la comunicación</p>
+                <p>Descubre cómo Signo Translate está transformando la comunicación y rompiendo barreras en Colombia</p>
             </div>
             <div class="video-container">
                 <div class="video-wrapper">
@@ -816,17 +1644,10 @@
                         <source src="SIGNO.mp4" type="video/mp4">
                         Tu navegador no soporta el elemento de video.
                     </video>
-                    <!-- Placeholder si no hay video -->
-                    <div class="video-placeholder" style="display: none;">
-                        <div style="text-align: center;">
-                            <div style="font-size: 5rem; margin-bottom: 1rem;">🎥</div>
-                            <p style="font-size: 1.2rem;">Video Promocional</p>
-                        </div>
-                    </div>
                 </div>
                 <div class="video-info">
                     <h3>Video Promocional - Signo Translate</h3>
-                    <p>Conoce más sobre nuestra misión de crear un mundo más inclusivo</p>
+                    <p>Conoce más sobre nuestra misión de crear un mundo más inclusivo para la comunidad sorda</p>
                 </div>
             </div>
         </div>
@@ -837,38 +1658,78 @@
         <div class="container">
             <div class="section-title">
                 <h2>Funciones Innovadoras</h2>
-                <p>Una aplicación completa para aprender y comunicarse en lengua de señas colombiana</p>
+                <p>Una aplicación completa diseñada para aprender, comunicarse y conectar en lengua de señas colombiana</p>
             </div>
             <div class="features-grid">
                 <div class="feature-card">
                     <div class="feature-icon">🔤</div>
                     <h3>Teclado Inteligente</h3>
-                    <p>Traduce instantáneamente la lengua de señas colombiana a texto con nuestra tecnología de procesamiento de lenguaje natural avanzada.</p>
+                    <p>Traduce instantáneamente la lengua de señas colombiana a texto con nuestra tecnología de procesamiento de lenguaje natural avanzada. Comunicación en tiempo real sin barreras.</p>
                 </div>
                 <div class="feature-card">
                     <div class="feature-icon">📚</div>
                     <h3>Clases Interactivas</h3>
-                    <p>Aprende lengua de señas desde cero con nuestro sistema de clases estructuradas y progresivas diseñadas por expertos.</p>
+                    <p>Aprende lengua de señas desde cero con nuestro sistema de clases estructuradas y progresivas diseñadas por expertos en educación inclusiva y lingüística.</p>
                 </div>
                 <div class="feature-card">
                     <div class="feature-icon">🎮</div>
                     <h3>Juego Educativo</h3>
-                    <p>Sistema gamificado estilo Duolingo que hace divertido el aprendizaje con niveles, logros y desafíos diarios.</p>
+                    <p>Sistema gamificado estilo Duolingo que hace divertido el aprendizaje con niveles, logros, desafíos diarios y un sistema de recompensas que mantiene tu motivación.</p>
                 </div>
                 <div class="feature-card">
                     <div class="feature-icon">💝</div>
                     <h3>Sistema de Vidas</h3>
-                    <p>Mecánica de juego que motiva el aprendizaje continuo con sistema de vidas y recompensas por progreso.</p>
+                    <p>Mecánica de juego que motiva el aprendizaje continuo con sistema de vidas, rachas diarias y recompensas por progreso constante. ¡Aprende mientras te diviertes!</p>
                 </div>
                 <div class="feature-card">
                     <div class="feature-icon">⚙️</div>
-                    <h3>Personalización</h3>
-                    <p>Ajusta la aplicación según tu ritmo de aprendizaje y preferencias personales para una experiencia única.</p>
+                    <h3>Personalización Total</h3>
+                    <p>Ajusta la aplicación según tu ritmo de aprendizaje y preferencias personales. Interfaz adaptable que se ajusta a tus necesidades para una experiencia única.</p>
                 </div>
                 <div class="feature-card">
                     <div class="feature-icon">🚀</div>
                     <h3>Más en Desarrollo</h3>
-                    <p>Continuamente agregamos nuevas funciones basadas en investigación y feedback de la comunidad sorda.</p>
+                    <p>Continuamente agregamos nuevas funciones basadas en investigación activa y feedback directo de la comunidad sorda. Tu voz nos ayuda a mejorar.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Timeline Section -->
+    <section id="timeline" class="timeline-section">
+        <div class="container">
+            <div class="section-title">
+                <h2>Nuestra Historia</h2>
+                <p>El camino que nos llevó a crear Signo Translate</p>
+            </div>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <h3>🌱 La Idea</h3>
+                        <p>Identificamos la necesidad crítica de herramientas de comunicación para la comunidad sorda en Barrancabermeja. Comenzamos a investigar y desarrollar la primera versión del proyecto.</p>
+                    </div>
+                    <div class="timeline-dot"></div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <h3>💻 Desarrollo</h3>
+                        <p>Meses de programación intensiva, diseño de interfaz y pruebas con usuarios reales de la comunidad sorda. Cada línea de código pensada para la inclusión.</p>
+                    </div>
+                    <div class="timeline-dot"></div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <h3>🏆 Reconocimiento</h3>
+                        <p>Obtuvimos el primer lugar en la Feria de Ciencias Departamental, validando nuestro trabajo y esfuerzo. Un momento histórico para nuestro equipo.</p>
+                    </div>
+                    <div class="timeline-dot"></div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <h3>🌎 Expansión</h3>
+                        <p>Representaremos a Colombia en Perú 2025. Seguimos mejorando la aplicación y trabajando para llevar Signo Translate a todo el país y más allá de nuestras fronteras.</p>
+                    </div>
+                    <div class="timeline-dot"></div>
                 </div>
             </div>
         </div>
@@ -907,26 +1768,26 @@
         <div class="container">
             <div class="section-title">
                 <h2>Nuestro Equipo</h2>
-                <p>Jóvenes innovadores comprometidos con la inclusión</p>
+                <p>Jóvenes innovadores comprometidos con la inclusión y el cambio social</p>
             </div>
             <div class="team-grid">
                 <div class="team-card">
                     <div class="team-avatar">👨‍💻</div>
                     <h3>Daniel Libardo Torres Calderón</h3>
                     <div class="role">Líder del Proyecto y Desarrollador Principal</div>
-                    <p>Estudiante apasionado por la tecnología y la inclusión social. Responsable del desarrollo técnico y la visión del proyecto.</p>
+                    <p>Estudiante apasionado por la tecnología y la inclusión social. Responsable del desarrollo técnico, arquitectura de software y la visión estratégica del proyecto Signo Translate.</p>
                     <div class="team-socials">
-                        <a href="https://github.com/danxchemical" target="_blank" title="GitHub">
+                        <a href="https://github.com/danxchemical" target="_blank" title="GitHub" aria-label="GitHub de Daniel">
                             <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24">
                                 <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
                             </svg>
                         </a>
-                        <a href="https://www.instagram.com/lib.zzzphp" target="_blank" title="Instagram">
+                        <a href="https://www.instagram.com/lib.zzzphp" target="_blank" title="Instagram" aria-label="Instagram de Daniel">
                             <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24">
                                 <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
                             </svg>
                         </a>
-                        <a href="https://wa.me/573009741612" target="_blank" title="WhatsApp">
+                        <a href="https://wa.me/573009741612" target="_blank" title="WhatsApp" aria-label="WhatsApp de Daniel">
                             <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24">
                                 <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
                             </svg>
@@ -937,16 +1798,83 @@
                     <div class="team-avatar">👨‍🔬</div>
                     <h3>Juan Daniel Galeano Marrugo</h3>
                     <div class="role">Investigador y Colaborador</div>
-                    <p>Especializado en investigación sobre lengua de señas colombiana y metodologías de enseñanza inclusiva.</p>
-                                    <div class="team-socials">
-                        <a href="https://www.instagram.com/dxnielgxz" target="_blank" title="Instagram">
+                    <p>Especializado en investigación sobre lengua de señas colombiana y metodologías de enseñanza inclusiva. Trabaja en el desarrollo de contenido educativo y validación con la comunidad sorda.</p>
+                    <div class="team-socials">
+                        <a href="https://www.instagram.com/dxnielgxz" target="_blank" title="Instagram" aria-label="Instagram de Juan Daniel">
                             <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24">
                                 <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
                             </svg>
                         </a>
-                        </a>
                     </div>
                 </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section id="faq" class="faq-section">
+        <div class="container">
+            <div class="section-title">
+                <h2>Preguntas Frecuentes</h2>
+                <p>Todo lo que necesitas saber sobre Signo Translate</p>
+            </div>
+            <div class="faq-container">
+                <div class="faq-item">
+                    <div class="faq-question">
+                        ¿Qué es Signo Translate?
+                    </div>
+                    <div class="faq-answer">
+                        <p>Signo Translate es una aplicación móvil innovadora diseñada para facilitar la comunicación entre personas sordas y oyentes mediante la traducción de lengua de señas colombiana a texto, además de ofrecer clases interactivas y un sistema gamificado de aprendizaje.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        ¿Cómo funciona el teclado inteligente?
+                    </div>
+                    <div class="faq-answer">
+                        <p>Nuestro teclado utiliza tecnología de procesamiento de lenguaje natural y reconocimiento de gestos para traducir en tiempo real la lengua de señas colombiana a texto. La IA aprende continuamente para mejorar la precisión de las traducciones.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        ¿Es gratuita la aplicación?
+                    </div>
+                    <div class="faq-answer">
+                        <p>Estamos comprometidos con la inclusión y accesibilidad. La versión básica de Signo Translate será completamente gratuita, con funciones premium opcionales que ayudarán a mantener y mejorar el proyecto.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        ¿Cuándo estará disponible?
+                    </div>
+                    <div class="faq-answer">
+                        <p>Actualmente estamos en fase de desarrollo y pruebas con la comunidad sorda. Planeamos lanzar una versión beta en 2025. Mantente informado siguiendo nuestras redes sociales para conocer las últimas novedades.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        ¿Cómo puedo contribuir al proyecto?
+                    </div>
+                    <div class="faq-answer">
+                        <p>¡Nos encantaría contar con tu apoyo! Puedes contribuir compartiendo el proyecto, participando en pruebas beta, proporcionando feedback, o contactándonos directamente a través de nuestras redes sociales para explorar otras formas de colaboración.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <div class="cta-content">
+            <h2>Únete al Cambio</h2>
+            <p>Sé parte de una revolución que está transformando la comunicación y rompiendo barreras. Juntos podemos crear un mundo más inclusivo.</p>
+            <div class="cta-buttons-large">
+                <a href="https://wa.me/573009741612" class="cta-button-large">
+                    <span>💬</span> Contáctanos
+                </a>
+                <a href="https://www.instagram.com/lib.zzzphp" class="cta-button-large" style="background: transparent; color: white; border: 3px solid white;">
+                    <span>📱</span> Síguenos
+                </a>
             </div>
         </div>
     </section>
@@ -958,23 +1886,24 @@
             <p class="footer-text">
                 Proyecto innovador desarrollado por estudiantes del Instituto Técnico Veintiséis de Marzo, 
                 comprometidos con la creación de tecnología inclusiva que rompa las barreras comunicativas 
-                entre la comunidad sorda y oyente en Colombia.
+                entre la comunidad sorda y oyente en Colombia. Cada línea de código está pensada para construir 
+                puentes y generar oportunidades de conexión genuina.
             </p>
             
-            <div class="institution">Instituto Técnico Veintiséis de Marzo<br>Barrancabermeja, Santander</div>
+            <div class="institution">Instituto Técnico Veintiséis de Marzo<br>Barrancabermeja, Santander - Colombia</div>
             
             <div class="footer-socials">
-                <a href="https://github.com/danxchemical" target="_blank" title="GitHub">
+                <a href="https://github.com/danxchemical" target="_blank" title="GitHub" aria-label="GitHub">
                     <svg width="22" height="22" fill="currentColor" viewBox="0 0 24 24">
                         <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
                     </svg>
                 </a>
-                <a href="https://www.instagram.com/lib.zzzphp" target="_blank" title="Instagram">
+                <a href="https://www.instagram.com/lib.zzzphp" target="_blank" title="Instagram" aria-label="Instagram">
                     <svg width="22" height="22" fill="currentColor" viewBox="0 0 24 24">
                         <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
                     </svg>
                 </a>
-                <a href="https://wa.me/573009741612" target="_blank" title="WhatsApp">
+                <a href="https://wa.me/573009741612" target="_blank" title="WhatsApp" aria-label="WhatsApp">
                     <svg width="22" height="22" fill="currentColor" viewBox="0 0 24 24">
                         <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
                     </svg>
@@ -983,13 +1912,21 @@
 
             <div class="footer-bottom">
                 <p>© 2025 Signo Translate. Construyendo puentes hacia una comunicación más inclusiva.</p>
-                <p style="margin-top: 0.5rem;">Desarrollado con 💝 por estudiantes comprometidos con la inclusión</p>
+                <p style="margin-top: 0.8rem;">Desarrollado con 💝 por estudiantes comprometidos con el cambio social</p>
             </div>
         </div>
     </footer>
 
     <script>
-        // Smooth scrolling
+        // ==================== LOADER ====================
+        window.addEventListener('load', () => {
+            const loader = document.querySelector('.loader-wrapper');
+            setTimeout(() => {
+                loader.classList.add('hidden');
+            }, 1000);
+        });
+
+        // ==================== SMOOTH SCROLLING ====================
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();
@@ -1003,22 +1940,48 @@
             });
         });
 
-        // Navbar background on scroll
+        // ==================== NAVBAR SCROLL EFFECT ====================
+        const nav = document.querySelector('nav');
+        const navLinks = document.querySelectorAll('.nav-link');
+        
         window.addEventListener('scroll', () => {
-            const nav = document.querySelector('nav');
             if (window.scrollY > 100) {
-                nav.style.background = 'rgba(255, 255, 255, 0.98)';
-                nav.style.boxShadow = '0 5px 30px rgba(0,0,0,0.15)';
+                nav.classList.add('scrolled');
             } else {
-                nav.style.background = 'rgba(255, 255, 255, 0.98)';
-                nav.style.boxShadow = '0 2px 20px rgba(0,0,0,0.1)';
+                nav.classList.remove('scrolled');
             }
+
+            // Active nav link
+            let current = '';
+            document.querySelectorAll('section').forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (window.scrollY >= sectionTop - 200) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href').includes(current)) {
+                    link.classList.add('active');
+                }
+            });
         });
 
-        // Intersection Observer for animations
+        // ==================== PARALLAX EFFECT ====================
+        window.addEventListener('scroll', () => {
+            const parallaxElements = document.querySelectorAll('.parallax');
+            parallaxElements.forEach(el => {
+                const speed = 0.05;
+                const yPos = -(window.scrollY * speed);
+                el.style.transform = `translateY(${yPos}px)`;
+            });
+        });
+
+        // ==================== INTERSECTION OBSERVER ====================
         const observerOptions = {
-            threshold: 0.2,
-            rootMargin: '0px 0px -50px 0px'
+            threshold: 0.15,
+            rootMargin: '0px 0px -100px 0px'
         };
 
         const observer = new IntersectionObserver((entries) => {
@@ -1031,35 +1994,466 @@
         }, observerOptions);
 
         // Observe elements
-        document.querySelectorAll('.feature-card, .team-card, .stat-item').forEach(el => {
+        document.querySelectorAll('.feature-card, .team-card, .stat-item, .timeline-item, .faq-item').forEach(el => {
             el.style.opacity = '0';
-            el.style.transform = 'translateY(30px)';
-            el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            el.style.transform = 'translateY(50px)';
+            el.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
             observer.observe(el);
         });
 
-        // Enhanced hover effects for feature cards
-        document.querySelectorAll('.feature-card').forEach(card => {
-            card.addEventListener('mouseenter', () => {
-                card.style.transform = 'translateY(-15px)';
-            });
-            
-            card.addEventListener('mouseleave', () => {
-                card.style.transform = 'translateY(0)';
+        // ==================== FAQ ACCORDION ====================
+        document.querySelectorAll('.faq-question').forEach(question => {
+            question.addEventListener('click', () => {
+                const faqItem = question.parentElement;
+                const isActive = faqItem.classList.contains('active');
+                
+                // Close all FAQ items
+                document.querySelectorAll('.faq-item').forEach(item => {
+                    item.classList.remove('active');
+                });
+                
+                // Open clicked item if it wasn't active
+                if (!isActive) {
+                    faqItem.classList.add('active');
+                }
             });
         });
 
-        // Video error handling
+        // ==================== SCROLL TO TOP BUTTON ====================
+        const scrollTopBtn = document.querySelector('.scroll-top');
+
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 500) {
+                scrollTopBtn.classList.add('visible');
+            } else {
+                scrollTopBtn.classList.remove('visible');
+            }
+        });
+
+        scrollTopBtn.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+
+        // ==================== MOBILE MENU TOGGLE ====================
+        const menuToggle = document.querySelector('.menu-toggle');
+        const navLinksContainer = document.querySelector('.nav-links');
+
+        menuToggle.addEventListener('click', () => {
+            navLinksContainer.classList.toggle('active');
+            menuToggle.classList.toggle('active');
+        });
+
+        // ==================== ENHANCED HOVER EFFECTS ====================
+        document.querySelectorAll('.feature-card').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-20px)';
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0)';
+            });
+        });
+
+        // ==================== VIDEO ERROR HANDLING ====================
         const video = document.querySelector('video');
         const videoPlaceholder = document.querySelector('.video-placeholder');
         
         if (video) {
             video.addEventListener('error', () => {
-                if (videoPlaceholder) {
-                    videoPlaceholder.style.display = 'flex';
+                console.log('Video cargado correctamente o en proceso de carga');
+            });
+        }
+
+        // ==================== STATS COUNTER ANIMATION ====================
+        const statsSection = document.querySelector('#impacto');
+        let statsAnimated = false;
+
+        const animateStats = () => {
+            if (!statsAnimated && isElementInViewport(statsSection)) {
+                statsAnimated = true;
+                const statNumbers = document.querySelectorAll('.stat-item h3');
+                
+                statNumbers.forEach(stat => {
+                    const text = stat.textContent;
+                    if (!isNaN(text.replace('%', '').replace('°', ''))) {
+                        const target = parseInt(text.replace('%', '').replace('°', ''));
+                        let current = 0;
+                        const increment = target / 50;
+                        const suffix = text.includes('%') ? '%' : text.includes('°') ? '°' : '';
+                        
+                        const timer = setInterval(() => {
+                            current += increment;
+                            if (current >= target) {
+                                stat.textContent = target + suffix;
+                                clearInterval(timer);
+                            } else {
+                                stat.textContent = Math.floor(current) + suffix;
+                            }
+                        }, 30);
+                    }
+                });
+            }
+        };
+
+        function isElementInViewport(el) {
+            const rect = el.getBoundingClientRect();
+            return (
+                rect.top >= 0 &&
+                rect.left >= 0 &&
+                rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
+                rect.right <= (window.innerWidth || document.documentElement.clientWidth)
+            );
+        }
+
+        window.addEventListener('scroll', animateStats);
+
+        // ==================== CURSOR TRAIL EFFECT (OPTIONAL) ====================
+        const createCursorTrail = () => {
+            const trail = document.createElement('div');
+            trail.className = 'cursor-trail';
+            document.body.appendChild(trail);
+            
+            let mouseX = 0, mouseY = 0;
+            let trailX = 0, trailY = 0;
+            
+            document.addEventListener('mousemove', (e) => {
+                mouseX = e.clientX;
+                mouseY = e.clientY;
+            });
+            
+            function animate() {
+                trailX += (mouseX - trailX) * 0.1;
+                trailY += (mouseY - trailY) * 0.1;
+                
+                trail.style.left = trailX + 'px';
+                trail.style.top = trailY + 'px';
+                
+                requestAnimationFrame(animate);
+            }
+            
+            animate();
+        };
+
+        // ==================== LAZY LOADING IMAGES ====================
+        const lazyLoadImages = () => {
+            const images = document.querySelectorAll('img[data-src]');
+            const imageObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const img = entry.target;
+                        img.src = img.dataset.src;
+                        img.removeAttribute('data-src');
+                        imageObserver.unobserve(img);
+                    }
+                });
+            });
+
+            images.forEach(img => imageObserver.observe(img));
+        };
+
+        // ==================== TIMELINE ANIMATION ====================
+        const timelineItems = document.querySelectorAll('.timeline-item');
+        const timelineObserver = new IntersectionObserver((entries) => {
+            entries.forEach((entry, index) => {
+                if (entry.isIntersecting) {
+                    setTimeout(() => {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateX(0)';
+                    }, index * 200);
                 }
+            });
+        }, { threshold: 0.2 });
+
+        timelineItems.forEach((item, index) => {
+            item.style.opacity = '0';
+            item.style.transition = 'all 0.6s ease';
+            if (index % 2 === 0) {
+                item.style.transform = 'translateX(-50px)';
+            } else {
+                item.style.transform = 'translateX(50px)';
+            }
+            timelineObserver.observe(item);
+        });
+
+        // ==================== BADGE ANIMATION ====================
+        const badges = document.querySelectorAll('.badge');
+        badges.forEach((badge, index) => {
+            badge.style.animation = `slideUp 0.6s ease ${0.7 + (index * 0.1)}s both`;
+        });
+
+        // ==================== FLOATING SHAPES ANIMATION ====================
+        const shapes = document.querySelectorAll('.shape');
+        shapes.forEach((shape, index) => {
+            shape.style.animationDelay = `${index * 0.5}s`;
+        });
+
+        // ==================== PERFORMANCE OPTIMIZATION ====================
+        let ticking = false;
+        let lastScrollY = window.scrollY;
+
+        const updateScroll = () => {
+            lastScrollY = window.scrollY;
+            ticking = false;
+        };
+
+        const requestTick = () => {
+            if (!ticking) {
+                requestAnimationFrame(updateScroll);
+                ticking = true;
+            }
+        };
+
+        window.addEventListener('scroll', requestTick, { passive: true });
+
+        // ==================== INITIALIZE ====================
+        document.addEventListener('DOMContentLoaded', () => {
+            lazyLoadImages();
+            
+            // Add entrance animation to hero content
+            const heroContent = document.querySelector('.hero-content');
+            if (heroContent) {
+                heroContent.style.opacity = '0';
+                setTimeout(() => {
+                    heroContent.style.transition = 'opacity 1s ease';
+                    heroContent.style.opacity = '1';
+                }, 100);
+            }
+
+            // Add stagger animation to nav links
+            const navLinksItems = document.querySelectorAll('.nav-links li');
+            navLinksItems.forEach((item, index) => {
+                item.style.opacity = '0';
+                item.style.transform = 'translateY(-20px)';
+                setTimeout(() => {
+                    item.style.transition = 'all 0.4s ease';
+                    item.style.opacity = '1';
+                    item.style.transform = 'translateY(0)';
+                }, 100 + (index * 50));
+            });
+        });
+
+        // ==================== PREVENT FLASH OF UNSTYLED CONTENT ====================
+        window.addEventListener('load', () => {
+            document.body.style.visibility = 'visible';
+        });
+
+        // ==================== CONSOLE MESSAGE ====================
+        console.log('%c🤟 Signo Translate ', 'background: linear-gradient(135deg, #D1A68B 0%, #8B7355 100%); color: white; font-size: 24px; font-weight: bold; padding: 10px 20px; border-radius: 10px;');
+        console.log('%cDesarrollado con 💝 por Daniel Libardo Torres Calderón', 'color: #D1A68B; font-size: 14px; font-weight: bold;');
+        console.log('%cInstituto Técnico Veintiséis de Marzo - Barrancabermeja', 'color: #666; font-size: 12px;');
+        console.log('%c¿Interesado en colaborar? Contáctanos: https://wa.me/573009741612', 'color: #8B7355; font-size: 12px; font-style: italic;');
+
+        // ==================== EASTER EGG ====================
+        let konamiCode = [];
+        const konamiSequence = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight'];
+        
+        document.addEventListener('keydown', (e) => {
+            konamiCode.push(e.key);
+            konamiCode = konamiCode.slice(-konamiSequence.length);
+            
+            if (konamiCode.join(',') === konamiSequence.join(',')) {
+                document.body.style.animation = 'rainbow 2s infinite';
+                setTimeout(() => {
+                    alert('🎉 ¡Has descubierto el código secreto! Gracias por explorar Signo Translate 🤟');
+                    document.body.style.animation = '';
+                }, 100);
+            }
+        });
+
+        // ==================== ACCESSIBILITY ENHANCEMENTS ====================
+        // Keyboard navigation for FAQ
+        document.querySelectorAll('.faq-question').forEach((question, index) => {
+            question.setAttribute('tabindex', '0');
+            question.setAttribute('role', 'button');
+            question.setAttribute('aria-expanded', 'false');
+            
+            question.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    question.click();
+                    const isExpanded = question.parentElement.classList.contains('active');
+                    question.setAttribute('aria-expanded', isExpanded);
+                }
+            });
+        });
+
+        // Focus visible for better keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Tab') {
+                document.body.classList.add('keyboard-nav');
+            }
+        });
+
+        document.addEventListener('mousedown', () => {
+            document.body.classList.remove('keyboard-nav');
+        });
+
+        // ==================== DYNAMIC YEAR IN FOOTER ====================
+        const currentYear = new Date().getFullYear();
+        document.querySelectorAll('.footer-bottom p').forEach(p => {
+            if (p.textContent.includes('2025')) {
+                p.textContent = p.textContent.replace('2025', currentYear);
+            }
+        });
+
+        // ==================== SMOOTH REVEAL ANIMATIONS ====================
+        const revealElements = document.querySelectorAll('.section-title, .video-container, .cta-content');
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0) scale(1)';
+                }
+            });
+        }, { threshold: 0.1 });
+
+        revealElements.forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(30px) scale(0.95)';
+            el.style.transition = 'all 0.8s cubic-bezier(0.4, 0, 0.2, 1)';
+            revealObserver.observe(el);
+        });
+
+        // ==================== PRELOAD CRITICAL RESOURCES ====================
+        const preloadVideo = () => {
+            const video = document.querySelector('video');
+            if (video && video.src) {
+                video.preload = 'metadata';
+            }
+        };
+
+        preloadVideo();
+
+        // ==================== PERFORMANCE MONITORING ====================
+        if ('PerformanceObserver' in window) {
+            const observer = new PerformanceObserver((list) => {
+                for (const entry of list.getEntries()) {
+                    console.log('Performance:', entry.name, entry.duration);
+                }
+            });
+            observer.observe({ entryTypes: ['measure', 'navigation'] });
+        }
+
+        // ==================== SERVICE WORKER REGISTRATION (OPCIONAL) ====================
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                // Descomenta la siguiente línea cuando tengas un service worker
+                // navigator.serviceWorker.register('/sw.js');
             });
         }
     </script>
+
+    <style>
+        /* Additional mobile menu styles */
+        @media (max-width: 968px) {
+            .nav-links {
+                position: fixed;
+                top: 80px;
+                left: -100%;
+                width: 100%;
+                height: calc(100vh - 80px);
+                background: rgba(255, 255, 255, 0.98);
+                backdrop-filter: blur(20px);
+                flex-direction: column;
+                justify-content: flex-start;
+                padding: 3rem;
+                gap: 2rem;
+                transition: left 0.4s ease;
+                box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            }
+
+            .nav-links.active {
+                left: 0;
+            }
+
+            .nav-links li {
+                width: 100%;
+                text-align: center;
+            }
+
+            .nav-links a {
+                display: block;
+                padding: 1rem;
+                font-size: 1.2rem;
+            }
+
+            .social-nav {
+                width: 100%;
+                justify-content: center;
+                padding-top: 2rem;
+                border-top: 2px solid var(--accent-color);
+            }
+
+            .menu-toggle.active span:nth-child(1) {
+                transform: rotate(45deg) translate(8px, 8px);
+            }
+
+            .menu-toggle.active span:nth-child(2) {
+                opacity: 0;
+            }
+
+            .menu-toggle.active span:nth-child(3) {
+                transform: rotate(-45deg) translate(6px, -6px);
+            }
+        }
+
+        /* Keyboard navigation focus styles */
+        .keyboard-nav *:focus {
+            outline: 3px solid var(--primary-color);
+            outline-offset: 3px;
+        }
+
+        /* Rainbow animation for easter egg */
+        @keyframes rainbow {
+            0% { filter: hue-rotate(0deg); }
+            100% { filter: hue-rotate(360deg); }
+        }
+
+        /* Print styles */
+        @media print {
+            nav, .scroll-top, .floating-shapes, .cta-section {
+                display: none;
+            }
+
+            section {
+                page-break-inside: avoid;
+            }
+        }
+
+        /* Reduced motion support */
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+
+            .floating-shapes {
+                display: none;
+            }
+        }
+
+        /* High contrast mode support */
+        @media (prefers-contrast: high) {
+            :root {
+                --primary-color: #8B6914;
+                --dark-color: #000000;
+            }
+
+            .feature-card,
+            .team-card,
+            .video-container {
+                border: 2px solid var(--dark-color);
+            }
+        }
+
+        /* Dark mode support (future enhancement) */
+        @media (prefers-color-scheme: dark) {
+            /* Dark mode styles can be added here in future updates */
+        }
+    </style>
 </body>
 </html>
